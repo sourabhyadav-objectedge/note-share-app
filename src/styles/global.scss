@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Rubik);
+* {
+ margin:0;
+ padding: 0;
+}
+html {
+ font-size:62.5%;
+ font-family:  "Rubik", sans-serif;
+ overflow-x: hidden;
+}
+
+div {
+ font-size:2rem;
+ animation: appear 0.2s ease-in;
+}
+ul {
+  margin-left: 3rem;
+}
+@keyframes appear {
+    0% {
+     opacity: 0; 
+    }
+    100% {
+     opacity: 1;   
+    }
+    
+}
