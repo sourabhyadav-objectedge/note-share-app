@@ -5,7 +5,6 @@ import React from 'react';
 interface Props {
     href:string,
     title:string,
-    children?:any,
     svg?:React.ReactNode
 
 }

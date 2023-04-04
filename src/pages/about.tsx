@@ -14,12 +14,15 @@ export default function About()
         <br/>
         <br/>
         <table className={classes.tables}>
-            <tr><th>Username</th><th>Password</th></tr>
-            <tr><td>admin</td><td>admin@1234</td></tr>
-            <tr><td>sachin</td><td>sachin@1234</td></tr>
-            <tr><td>sourabh</td><td>sourabh@1234</td></tr>
-            <tr><td>other</td><td>passwords@1234</td></tr>
-
+            <thead>
+                <tr><th>Username</th><th>Password</th></tr>
+            </thead>
+            <tbody>
+                    <tr><td>admin</td><td>admin@1234</td></tr>
+                    <tr><td>sachin</td><td>sachin@1234</td></tr>
+                    <tr><td>sourabh</td><td>sourabh@1234</td></tr>
+                    <tr><td>other</td><td>passwords@1234</td></tr>
+            </tbody>
         </table>
         <h2 className={classes.enjoy}>Enjoy!</h2>
         

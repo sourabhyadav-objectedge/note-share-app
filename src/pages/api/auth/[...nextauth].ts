@@ -15,22 +15,15 @@ export default NextAuth({
                 
             },
             async authorize(credentials)
-            {
-                
-                
-                try{    
-                    
+            {   
+               try{            
                     const response= await axios.post(`${process.env.VERCEL}api/authorizeUser`,{username:credentials?.username,password:credentials?.password});
-                    return response.data.username;
+                    return {name:response.data.username,id:"",email:""};
                 }
                 catch(err:any){
-                    
                     return null;
                 }
-
-    
             }
-
         })
     ]
 });
