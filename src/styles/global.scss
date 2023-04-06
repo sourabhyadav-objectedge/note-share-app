@@ -25,3 +25,20 @@ ul {
     }
     
 }
+@media only screen and (max-width: 57em) {
+  html {
+    font-size: 50%;
+  }
+}
+@media only screen and (max-width: 43em) {
+  html {
+    font-size: 31.25%;
+  }
+}
+@media only screen and (max-width: 29em) {
+  html {
+    font-size: 25%;
+  }
+}
+
+
