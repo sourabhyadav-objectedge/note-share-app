@@ -12,8 +12,9 @@ interface Props{
 const UpdateModal:NextPage<Props> = (props)=>{
     const textRef=useRef<any>(null);
     const dispatch=useDispatch<any>();
+    document.body.style.overflow="hidden";
     // console.log(props.id,props.note);
-    return <div className={styles.container}>
+    return <div className={styles.container} style={{top:document.body.scrollTop}}>
            <div>
             <h1>Please edit</h1>
             <Form style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center",gap:"2rem"}}>
@@ -21,8 +22,8 @@ const UpdateModal:NextPage<Props> = (props)=>{
                     <textarea  style={{width:"80%",fontSize:"1.5rem"}} ref={textRef} defaultValue={props.note} rows={3} ></textarea>
             </Form>
             <span>
-                <Button  onClick={()=>{dispatch(updateNote({_id:props.id,note:textRef.current?.value}));}}>Update</Button>
-                <Button onClick={()=>{dispatch(crudCardActions.setUpdating(false))}}>Cancel</Button>
+                <Button  onClick={()=>{document.body.style.overflow="auto";dispatch(updateNote({_id:props.id,note:textRef.current?.value}));}}>Update</Button>
+                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setUpdating(false))}}>Cancel</Button>
             </span>
             </div> 
     </div>;

@@ -10,14 +10,15 @@ import { myNotesActions } from "@/store/myNotesSlice";
     }
 const DeleteModal:NextPage<Props> = (props)=>{
     const dispatch=useDispatch<any>();
-    const myNotesLoading=useSelector((s:any)=>s.myNotes.loading);
-    console.log(props.id);
-    return <div className={styles.container}>
+    document.body.style.overflow="hidden"
+    // console.log(props.id);
+    console.log(document.body.scrollTop)
+    return <div className={styles.container} style={{top:document.body.scrollTop}}>
            <div >
             <h1>Are you sure you want to delete?</h1>
             <span>
-                <Button variant="danger" onClick={()=>{dispatch(deleteNote(props.id));}}>Delete</Button>
-                <Button onClick={()=>{dispatch(crudCardActions.setDeleting(false))}}>Cancel</Button>
+                <Button variant="danger" onClick={()=>{document.body.style.overflow="auto";dispatch(deleteNote(props.id));}}>Delete</Button>
+                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setDeleting(false));}}>Cancel</Button>
             </span>
             </div> 
     </div>;
