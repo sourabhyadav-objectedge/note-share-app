@@ -18,6 +18,7 @@ export default NextAuth({
             {   
                try{            
                     const response= await axios.post(`${process.env.VERCEL}api/authorizeUser`,{username:credentials?.username,password:credentials?.password});
+                    console.log(`${process.env.VERCEL}api/authorizeUser`);
                     return {name:response.data.username,id:"",email:""};
                 }
                 catch(err:any){
