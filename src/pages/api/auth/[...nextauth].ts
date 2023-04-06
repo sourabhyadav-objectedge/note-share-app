@@ -16,10 +16,34 @@ export default NextAuth({
             },
             async authorize(credentials)
             {   
-               try{            
-                    const response= await axios.post(`${process.env.VERCEL}api/authorizeUser`,{username:credentials?.username,password:credentials?.password});
-                    console.log(`${process.env.VERCEL}api/authorizeUser`);
-                    return {name:response.data.username,id:"",email:""};
+                const userLogins:{username:string,password:string}[]=[
+                    {
+                        username:"admin",
+                        password:"admin@1234"
+                    },
+                    {
+                        username:"sachin",
+                        password:"sachin@1234"
+                    },
+                    {
+                        username:"sourabh",
+                        password:"sourabh@1234"
+                    },
+                    {
+                        username:"other",
+                        password:"password@1234"
+                    }
+                
+                ]
+               try{  
+                    const credential:{username:string,password:string}|undefined=
+                    userLogins.find(login=>login.username===credentials?.username&&login.password===credentials?.password);
+                    if(credential!==undefined)
+                    {
+                        return {name:credentials?.username,id:"",email:""};
+                    }
+                    else return null;
+                    
                 }
                 catch(err:any){
                     return null;
