@@ -17,6 +17,7 @@ interface InitialState {
     loading:boolean,
     error:boolean,
     notes:any
+
 }
 const initialState:InitialState={loading:false,error:false,notes:[]}
 const myNotesSlice=createSlice({
@@ -28,7 +29,7 @@ const myNotesSlice=createSlice({
         },
         setError(state,{payload}){
             state.error=payload;
-        }
+        } 
     },
     extraReducers(builder){
         builder.addCase(fetchMyNotes.pending,(state)=>{

@@ -7,10 +7,12 @@ import {Provider as ReduxProvider }from 'react-redux';
 import store from '@/store';
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <ReduxProvider store={store}>
-          <SessionProvider session={pageProps.session}>
-            <NavBar/>
-            <Component {...pageProps} />
-          </SessionProvider>
-        </ReduxProvider>
+  return<div style={{height:"100vh",position:"relative"}}> 
+          <ReduxProvider store={store}>
+            <SessionProvider session={pageProps.session}>
+              <NavBar/>
+              <Component {...pageProps} />
+            </SessionProvider>
+          </ReduxProvider>
+        </div>
 }

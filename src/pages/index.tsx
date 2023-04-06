@@ -1,11 +1,62 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import Card from "@/components/AllNotes/Card";
+import styles from "@/styles/allNotes.module.scss";
+import { GetServerSideProps, NextPage } from 'next';
+import clientPromise from "@/lib/mongodb";
+import { allNotesActions } from "@/store/allNotesSlice";
+import {useDispatch,useSelector} from 'react-redux';
+interface Props {
+    notes:{author:string,note:string}[],
+    error:boolean
+};
+const  AllNotes:NextPage<Props>=(props)=>
+{
+    const dispatch=useDispatch();
+    const state=useSelector((s:any)=>s.allNotes);
+    dispatch(allNotesActions.setNotes(props.notes));
+    dispatch(allNotesActions.setError(props.error));
+    let key=0;
+    if(!state.error)
+        return<>
+                <h2 style={{textAlign:"center"}}>Notes across all users</h2>
+                <hr/>
+                <div className={styles.container}>
+                    <div className={styles.innerContainer}>
+                        {props.notes.map(e=><Card  key={key++}author={e.author}  text={e.note}/>)}
+                    </div>
+                </div>
+            </>
+    else 
+        return <h1 style={{marginTop:"2rem",textAlign:"center"}}>An error occured on the server.</h1>
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
-  return <></>
+}
+const getServerSideProps:GetServerSideProps=async ()=>{
+    try{
+        const dbClient=await clientPromise;
+        const db = dbClient.db('notes-share');
+        const tempResult=await db.collection('notes').find({}).toArray();
+        const result=tempResult.map((e:any)=>({author:e.author,note:e.note}))
+        //console.log(result);
+        return {
+            props:{
+                notes:result,
+                error:false,
+                
+            }
+        }
+        
+    }
+    catch(err){
+        console.log(err);
+        return {
+            props:{
+                notes:[],
+                error:true
+            }
+            
+        }
+        
+    }
     
 }
+export default AllNotes;
+export {getServerSideProps};
