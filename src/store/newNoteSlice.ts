@@ -1,7 +1,7 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice,createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from "axios"
 
-const sendNote=createAsyncThunk('user/sendNote',async (data:any)=>{
+const sendNote=createAsyncThunk('user/sendNote',async (data:{author:string|null|undefined,note:string})=>{
     try{
         const response=await axios.post(`api/createNote`,data);
         return response.status;
@@ -13,20 +13,26 @@ const sendNote=createAsyncThunk('user/sendNote',async (data:any)=>{
     }
     
 })
+interface InitialState {
+    note:string,
+    submitting:boolean,
+    error:boolean,
+    submitted:boolean
+}
 const newNoteSlice=createSlice({
     name:"newNote",
     initialState:{note:"",submitting:false,error:false,submitted:false},
     reducers:{
-        setError(state,action){
+        setError(state:InitialState,action:PayloadAction<InitialState['error']>){
             state.error=action.payload
         },
-        setSubmitting(state,action){
+        setSubmitting(state:InitialState,action:PayloadAction<InitialState['submitting']>){
             state.submitting=action.payload;
         },
-        setNote(state,action){
+        setNote(state:InitialState,action:PayloadAction<InitialState['note']>){
             state.note=action.payload;
         },
-        setSubmitted(state,action){
+        setSubmitted(state:InitialState,action:PayloadAction<InitialState['submitted']>){
             state.submitted=action.payload;
         }
     },

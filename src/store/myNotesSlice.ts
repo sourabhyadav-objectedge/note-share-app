@@ -1,7 +1,7 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice,createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from "axios"
 
-const fetchMyNotes=createAsyncThunk('user/fetchMyNotes',async (data:any)=>{
+const fetchMyNotes=createAsyncThunk('user/fetchMyNotes',async (data:{author:string|null|undefined})=>{
     try{
         const response=await axios.post(`api/myNotes`,data);
         return response.data;
@@ -24,10 +24,10 @@ const myNotesSlice=createSlice({
     name:"myNotes",
     initialState,
     reducers:{
-        setLoading(state,{payload}){
+        setLoading(state:InitialState,{payload}:PayloadAction<InitialState['loading']>){
             state.loading=payload;
         },
-        setError(state,{payload}){
+        setError(state:InitialState,{payload}:PayloadAction<InitialState['error']>){
             state.error=payload;
         } 
     },

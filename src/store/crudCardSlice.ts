@@ -1,4 +1,4 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice,createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios'
 const deleteNote=createAsyncThunk('user/deleteNote',async(_id:string)=>{
     try{
@@ -9,7 +9,7 @@ const deleteNote=createAsyncThunk('user/deleteNote',async(_id:string)=>{
         return Promise.reject();
     }
 });
-const updateNote=createAsyncThunk('user/updateNote',async(data:object)=>{
+const updateNote=createAsyncThunk('user/updateNote',async(data:{_id:string,note:string})=>{
     try{
         return (await axios.post('api/updateNote',data)).status
     }
@@ -35,33 +35,33 @@ const crudCardSlice=createSlice({
     name:"crudCard",
     initialState,
     reducers:{
-        setDeleting(state,{payload}){
+        setDeleting(state:InitialState,{payload}:PayloadAction<InitialState['deleting']>){
             state.deleting=payload;
         },
-        setDeleteError(state,{payload}){
+        setDeleteError(state:InitialState,{payload}:PayloadAction<InitialState['deleteError']>){
             state.deleteError=payload;
         },
-        setDeleted(state,{payload}){
+        setDeleted(state:InitialState,{payload}:PayloadAction<InitialState['deleted']>){
             state.deleted=payload;
         },
-        setUpdating(state,{payload}){
+        setUpdating(state:InitialState,{payload}:PayloadAction<InitialState['updating']>){
             state.updating=payload;
         },
-        setUpdateError(state,{payload}){
+        setUpdateError(state:InitialState,{payload}:PayloadAction<InitialState['updateError']>){
             state.updateError=payload;
         },
-        setUpdated(state,{payload}){
+        setUpdated(state:InitialState,{payload}:PayloadAction<InitialState['updated']>){
             state.updated=payload;
         },
-        setDeleteId(state,{payload}){
+        setDeleteId(state:InitialState,{payload}:PayloadAction<InitialState['deleteId']>){
             state.deleteId=payload;
         },
-        setUpdateId(state,{payload}){
+        setUpdateId(state:InitialState,{payload}:PayloadAction<InitialState['updateId']>){
             state.updateId=payload;
         }
     },
     extraReducers(builder){
-        builder.addCase(deleteNote.pending,(state)=>{
+        builder.addCase(deleteNote.pending,()=>{
             
         })
         builder.addCase(deleteNote.fulfilled,(state)=>{
