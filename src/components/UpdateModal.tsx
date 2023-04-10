@@ -1,17 +1,18 @@
 import { NextPage } from "next";
 import styles from "@/styles/updateModal.module.scss"
 import {Button} from 'react-bootstrap';
-import {useDispatch,useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import { crudCardActions,updateNote} from "@/store/crudCardSlice";
 import {Form} from 'react-bootstrap';
 import { useRef } from "react";
+import { AppDispatch } from "@/store";
 interface Props{
     note:string,
     id:string
 }
 const UpdateModal:NextPage<Props> = (props)=>{
-    const textRef=useRef<any>(null);
-    const dispatch=useDispatch<any>();
+    const textRef=useRef<HTMLTextAreaElement>(null);
+    const dispatch=useDispatch<AppDispatch>();
     document.body.style.overflow="hidden";
     // console.log(props.id,props.note);
     return <div className={styles.container} style={{top:document.body.scrollTop}}>

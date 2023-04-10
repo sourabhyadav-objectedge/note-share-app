@@ -6,7 +6,7 @@ import DeleteModal from "./DeleteModal";
 import DeleteErrorModal from "./DeleteErrorModal";
 import UpdateModal from "./UpdateModal";
 import UpdateErrorModal from "./UpdateErrorModal";
-import { stat } from "fs";
+import { ReduxStateType } from "@/store";
 interface Props {
     text:string,
     author:string,
@@ -15,7 +15,7 @@ interface Props {
 const NoteCard:NextPage<Props>= (props)=>
 {
     const dispatch=useDispatch();
-    const state=useSelector((s:any)=>s.crudCard);
+    const state=useSelector((s:ReduxStateType)=>s.crudCard);
     function deleteHandler():void {
         dispatch(crudCardActions.setDeleteId(props.id));
         dispatch(crudCardActions.setDeleting(true));

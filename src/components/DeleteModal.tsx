@@ -3,13 +3,13 @@ import styles from "@/styles/deleteModal.module.scss"
 import {Button} from 'react-bootstrap';
 import {useDispatch,useSelector} from 'react-redux'
 import { crudCardActions,deleteNote} from "@/store/crudCardSlice";
-import { myNotesActions } from "@/store/myNotesSlice";
+import { AppDispatch } from "@/store";
     interface Props{
         note:string,
         id:string
     }
 const DeleteModal:NextPage<Props> = (props)=>{
-    const dispatch=useDispatch<any>();
+    const dispatch=useDispatch<AppDispatch>();
     document.body.style.overflow="hidden"
     // console.log(props.id);
     console.log(document.body.scrollTop)

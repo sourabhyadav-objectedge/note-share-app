@@ -9,7 +9,7 @@ const deleteNote=createAsyncThunk('user/deleteNote',async(_id:string)=>{
         return Promise.reject();
     }
 });
-const updateNote=createAsyncThunk('user/updateNote',async(data:{_id:string,note:string})=>{
+const updateNote=createAsyncThunk('user/updateNote',async(data:{_id:string,note:string|undefined})=>{
     try{
         return (await axios.post('api/updateNote',data)).status
     }
