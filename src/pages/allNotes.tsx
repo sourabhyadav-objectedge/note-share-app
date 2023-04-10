@@ -2,8 +2,10 @@ import Card from "@/components/AllNotes/Card";
 import styles from "@/styles/allNotes.module.scss";
 import { GetServerSideProps, NextPage } from 'next';
 import clientPromise from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 import { allNotesActions } from "@/store/allNotesSlice";
 import {useDispatch,useSelector} from 'react-redux';
+import { ReduxStateType } from "@/store";
 interface Props {
     notes:{author:string,note:string}[],
     error:boolean
@@ -11,7 +13,7 @@ interface Props {
 const  AllNotes:NextPage<Props>=(props)=>
 {
     const dispatch=useDispatch();
-    const state=useSelector((s:any)=>s.allNotes);
+    const state=useSelector((s:ReduxStateType)=>s.allNotes);
     dispatch(allNotesActions.setNotes(props.notes));
     dispatch(allNotesActions.setError(props.error));
     let key=0;
@@ -21,7 +23,7 @@ const  AllNotes:NextPage<Props>=(props)=>
                 <hr/>
                 <div className={styles.container}>
                     <div className={styles.innerContainer}>
-                        {props.notes.map(e=><Card  key={key++}author={e.author}  text={e.note}/>)}
+                        {props.notes.map((e:typeof props.notes[number])=><Card  key={key++}author={e.author}  text={e.note}/>)}
                     </div>
                 </div>
             </>
@@ -34,8 +36,8 @@ const getServerSideProps:GetServerSideProps=async ()=>{
         const dbClient=await clientPromise;
         const db = dbClient.db('notes-share');
         const tempResult=await db.collection('notes').find({}).toArray();
-        const result=tempResult.map((e:any)=>({author:e.author,note:e.note}))
-        // console.log(result);
+        const result=tempResult.map((e:{author:string,note:string,_id:ObjectId})=>({author:e.author,note:e.note}))
+        //console.log(result);
         return {
             props:{
                 notes:result,

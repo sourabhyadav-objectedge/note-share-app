@@ -2,24 +2,23 @@ import {useSession} from 'next-auth/react'
 import {Form,Button} from 'react-bootstrap';
 import { useSelector,useDispatch } from 'react-redux';
 import { newNotesActions as actions,sendNote} from '@/store/newNoteSlice';
-
-
+import { ReduxStateType ,AppDispatch} from '@/store';
+import React from 'react';
 export default function NewNote()
 {
 
-    const state=useSelector((s:any)=>s.newNote);
-    const dispatch=useDispatch<any>();
+    const state=useSelector((s:ReduxStateType)=>s.newNote);
+    const dispatch=useDispatch<AppDispatch>();
     const {data:session,status}=useSession();
     
 
 
-    async function createNewNote(event:any):Promise <void>{
+    async function createNewNote(event:React.MouseEvent<HTMLButtonElement>):Promise <void>{
        event.preventDefault();
        await dispatch(sendNote({author:session?.user?.name,note:state.note}));
-       
     }
 
-    function createNote(event:any):void
+    function createNote(event:React.ChangeEvent<HTMLTextAreaElement>):void
     {
         dispatch(actions.setNote(event.target.value));
     }
