@@ -3,14 +3,19 @@ import {Button} from 'react-bootstrap';
 import {useDispatch} from 'react-redux'
 import { crudCardActions} from "@/store/crudCardSlice";
 import { AppDispatch } from "@/store";
+import {FunctionComponent}  from "react";
 
-const DeleteErrorModal = ()=>{
+interface Props{
+    index:number
+}
+const DeleteErrorModal:FunctionComponent<Props>= ({index})=>{
     const dispatch=useDispatch<AppDispatch>();
-    return <div className={styles.container}>
+    document.body.style.overflow="hidden"
+    return <div className={styles.container} style={{top:document.body.scrollTop}}>
            <div >
             <h1>An error occured while deleting</h1>
             <span>
-                <Button onClick={()=>{dispatch(crudCardActions.setDeleting(false));dispatch(crudCardActions.setDeleteError(false));}}>Cancel</Button>
+                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setDeletingByIndex({value:false,index}));dispatch(crudCardActions.setDeleteErrorByIndex({value:false,index}));}}>Cancel</Button>
             </span>
             </div> 
     </div>;

@@ -3,14 +3,19 @@ import {Button} from 'react-bootstrap';
 import {useDispatch} from 'react-redux'
 import { crudCardActions} from "@/store/crudCardSlice";
 import { AppDispatch } from "@/store";
+import { FunctionComponent } from "react";
+interface Props{
+    index:number
+}
 
-const UpdateErrorModal = ()=>{
+const UpdateErrorModal :FunctionComponent<Props>= ({index})=>{
     const dispatch=useDispatch<AppDispatch>();
-    return <div className={styles.container}>
+    document.body.style.overflow="hidden";
+    return <div className={styles.container} style={{top:document.body.scrollTop}}>
            <div >
             <h1>An error occured while updating</h1>
             <span>
-                <Button onClick={()=>{dispatch(crudCardActions.setUpdating(false));dispatch(crudCardActions.setUpdateError(false));}}>Cancel</Button>
+                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setUpdatingByIndex({index,value:false}));dispatch(crudCardActions.setUpdateErrorByIndex({index,value:false}));}}>Cancel</Button>
             </span>
             </div> 
     </div>;

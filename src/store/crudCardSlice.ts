@@ -1,92 +1,98 @@
 import {createSlice,createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios'
-const deleteNote=createAsyncThunk('user/deleteNote',async(_id:string)=>{
+const deleteNote=createAsyncThunk<number,{_id:string,index:number},{rejectValue:number}>('user/deleteNote',async({_id,index},thunkApi)=>{
     try{
-        return (await axios.post('api/deleteNote',{_id})).status
+        await axios.post('api/deleteNote',{_id});
+        return thunkApi.fulfillWithValue(index);
     }
     catch(err){
         console.log(err);
-        return Promise.reject();
+        return thunkApi.rejectWithValue(index);
     }
 });
-const updateNote=createAsyncThunk('user/updateNote',async(data:{_id:string,note:string|undefined})=>{
+const updateNote=createAsyncThunk<number,{_id:string,note:string|undefined,index:number},{rejectValue:number}>('user/updateNote',async({_id,note,index},thunkApi)=>{
     try{
-        return (await axios.post('api/updateNote',data)).status
+        await axios.post('api/1updateNote',{_id,note});
+        return thunkApi.fulfillWithValue(index);
+
     }
     catch(err){
         console.log(err);
-        return Promise.reject();
+        return thunkApi.rejectWithValue(index);
     }
 })
 
 interface InitialState {
-    deleting:boolean,
-    deleteError:boolean,
+    deleting:boolean[]|[],
+    deleteError:boolean[]|[],
     deleted:boolean,
-    deleteId:string,
-    updating:boolean,
+    updating:boolean[]|[],
+    updateError:boolean[]|[],
     updated:boolean,
-    updateError:boolean,
-    updateId:string
+    
+
 
 }
-const initialState:InitialState={deleting:false,deleteError:false,deleted:false,deleteId:"",updating:false,updated:false,updateError:false,updateId:""}
+const initialState:InitialState={deleting:[],deleteError:[],deleted:false,updating:[],updated:false,updateError:[]}
 const crudCardSlice=createSlice({
     name:"crudCard",
     initialState,
     reducers:{
-        setDeleting(state:InitialState,{payload}:PayloadAction<InitialState['deleting']>){
-            state.deleting=payload;
-        },
-        setDeleteError(state:InitialState,{payload}:PayloadAction<InitialState['deleteError']>){
-            state.deleteError=payload;
+        setDeletingByIndex(state:InitialState,{payload}:PayloadAction<{index:number,value:boolean}>){
+            state.deleting[payload.index]=payload.value;
         },
         setDeleted(state:InitialState,{payload}:PayloadAction<InitialState['deleted']>){
             state.deleted=payload;
         },
-        setUpdating(state:InitialState,{payload}:PayloadAction<InitialState['updating']>){
-            state.updating=payload;
+        setDeleteErrorByIndex(state:InitialState,{payload}:PayloadAction<{index:number,value:boolean}>){
+            state.deleteError[payload.index]=payload.value;
         },
-        setUpdateError(state:InitialState,{payload}:PayloadAction<InitialState['updateError']>){
-            state.updateError=payload;
+        setUpdatingByIndex(state:InitialState,{payload}:PayloadAction<{index:number,value:boolean}>){
+            state.updating[payload.index]=payload.value;
         },
         setUpdated(state:InitialState,{payload}:PayloadAction<InitialState['updated']>){
             state.updated=payload;
         },
-        setDeleteId(state:InitialState,{payload}:PayloadAction<InitialState['deleteId']>){
-            state.deleteId=payload;
+        setUpdateErrorByIndex(state:InitialState,{payload}:PayloadAction<{index:number,value:boolean}>){
+            state.updateError[payload.index]=payload.value;
         },
-        setUpdateId(state:InitialState,{payload}:PayloadAction<InitialState['updateId']>){
-            state.updateId=payload;
-        }
+
+        
     },
     extraReducers(builder){
         builder.addCase(deleteNote.pending,()=>{
             
         })
-        builder.addCase(deleteNote.fulfilled,(state)=>{
-            state.deleting=false;
-            state.deleteError=false;
+        builder.addCase(deleteNote.fulfilled,(state,{payload:index})=>{
+            state.deleting[index]=false;
+            state.deleteError[index]=false;
             state.deleted=true;
-
+            
         })
-        builder.addCase(deleteNote.rejected,(state)=>{
-            state.deleting=false;
-            state.deleteError=true;
+        builder.addCase(deleteNote.rejected,(state,{payload:index})=>{
+            
+            if(index!==undefined){
+                state.deleting[index]=false;
+                state.deleteError[index]=true;
+                
+            }
+        
         })
         builder.addCase(updateNote.pending,()=>{
 
         })
-        builder.addCase(updateNote.fulfilled,(state)=>{
-            state.updating=false;
-            state.updateError=false;
+        builder.addCase(updateNote.fulfilled,(state,{payload:index})=>{
+            state.updating[index]=false;
+            state.updateError[index]=false;
             state.updated=true;
             
             
         })
-        builder.addCase(updateNote.rejected,(state)=>{
-            state.updating=false;
-            state.updateError=true;
+        builder.addCase(updateNote.rejected,(state,{payload:index})=>{
+            if(index!==undefined){
+                state.updating[index]=false;
+                state.updateError[index]=true;
+            }
             
         })
     }

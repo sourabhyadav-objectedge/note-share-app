@@ -23,7 +23,6 @@ export default function MyNotes()
         }
     },[status,deleted,updated]);
     let key=0;
-    
     if(status==='loading'||state.loading)
         return <h2 style={{textAlign:"center"}}>Loading...</h2>;
     if(state.error)
@@ -34,7 +33,7 @@ export default function MyNotes()
                 <hr/>
                 <div className={styles.container}>
                     <div className={styles.innerContainer}>
-                        {state.notes.map((e:ReduxStateType['myNotes']['notes'])=><CrudCard  key={key++}author={e.author} id={e._id} text={e.note}/>)}
+                        {state.notes.map((e:ReduxStateType['myNotes']['notes'])=><CrudCard index={key} key={key++}author={e.author} id={e._id} text={e.note}/>)}
                         {state.notes.length==0&&<h2 style={{textAlign:"center"}}>No notes found</h2>}
                     </div>
                 </div>

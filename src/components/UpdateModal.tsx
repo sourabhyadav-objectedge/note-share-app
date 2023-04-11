@@ -8,7 +8,8 @@ import { useRef } from "react";
 import { AppDispatch } from "@/store";
 interface Props{
     note:string,
-    id:string
+    id:string,
+    index:number
 }
 const UpdateModal:NextPage<Props> = (props)=>{
     const textRef=useRef<HTMLTextAreaElement>(null);
@@ -23,8 +24,8 @@ const UpdateModal:NextPage<Props> = (props)=>{
                     <textarea  style={{width:"80%",fontSize:"1.5rem"}} ref={textRef} defaultValue={props.note} rows={3} ></textarea>
             </Form>
             <span>
-                <Button  onClick={()=>{document.body.style.overflow="auto";dispatch(updateNote({_id:props.id,note:textRef.current?.value}));}}>Update</Button>
-                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setUpdating(false))}}>Cancel</Button>
+                <Button  onClick={()=>{document.body.style.overflow="auto";dispatch(updateNote({_id:props.id,note:textRef.current?.value,index:props.index}));}}>Update</Button>
+                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setUpdatingByIndex({index:props.index,value:false}))}}>Cancel</Button>
             </span>
             </div> 
     </div>;

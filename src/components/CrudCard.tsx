@@ -10,19 +10,22 @@ import { ReduxStateType } from "@/store";
 interface Props {
     text:string,
     author:string,
-    id:string
+    id:string,
+    index:number
 };
 const NoteCard:NextPage<Props>= (props)=>
 {
     const dispatch=useDispatch();
-    const state=useSelector((s:ReduxStateType)=>s.crudCard);
+    const isDeleting=useSelector((s:ReduxStateType)=>s.crudCard.deleting[props.index]);
+    const deleteError=useSelector((s:ReduxStateType)=>s.crudCard.deleteError[props.index]);
+    const isUpdating=useSelector((s:ReduxStateType)=>s.crudCard.updating[props.index]);
+    const updateError=useSelector((s:ReduxStateType)=>s.crudCard.updateError[props.index]);
     function deleteHandler():void {
-        dispatch(crudCardActions.setDeleteId(props.id));
-        dispatch(crudCardActions.setDeleting(true));
+        dispatch(crudCardActions.setDeletingByIndex({index:props.index,value:true}));
+
     }
     function editHandler():void {
-      dispatch(crudCardActions.setUpdateId(props.id));
-      dispatch(crudCardActions.setUpdating(true));
+      dispatch(crudCardActions.setUpdatingByIndex({index:props.index,value:true}));
     }
     
     return (
@@ -39,10 +42,10 @@ const NoteCard:NextPage<Props>= (props)=>
         <Button style={{width:"8rem"}} onClick={deleteHandler}>delete</Button>
     </div>
     </Card>
-    {state.deleting&&state.deleteId==props.id&&<DeleteModal id={props.id} note={props.text} />}
-    {state.deleteError&&<DeleteErrorModal/>}
-    {state.updating&&state.updateId==props.id&&<UpdateModal id={props.id} note={props.text}/>}
-    {state.updateError&&<UpdateErrorModal/>}
+    {isDeleting&&<DeleteModal id={props.id} index={props.index} />}
+    {deleteError&&<DeleteErrorModal index={props.index}/>}
+    {isUpdating &&<UpdateModal id={props.id} note={props.text} index={props.index}/>}
+    {updateError&&<UpdateErrorModal index={props.index}/>}
     </>
     );
 }
