@@ -15,6 +15,16 @@ const UpdateModal:NextPage<Props> = (props)=>{
     const textRef=useRef<HTMLTextAreaElement>(null);
     const dispatch=useDispatch<AppDispatch>();
     document.body.style.overflow="hidden";
+    function onUpdate():void 
+    {
+        document.body.style.overflow="auto";
+        dispatch(updateNote({_id:props.id,note:textRef.current?.value,index:props.index}));
+    }
+    function onCancel():void
+    {
+        document.body.style.overflow="auto";
+        dispatch(crudCardActions.setUpdatingByIndex({index:props.index,value:false}));
+    }
     // console.log(props.id,props.note);
     return <div className={styles.container} style={{top:document.body.scrollTop}}>
            <div>
@@ -24,8 +34,8 @@ const UpdateModal:NextPage<Props> = (props)=>{
                     <textarea  style={{width:"80%",fontSize:"1.5rem"}} ref={textRef} defaultValue={props.note} rows={3} ></textarea>
             </Form>
             <span>
-                <Button  onClick={()=>{document.body.style.overflow="auto";dispatch(updateNote({_id:props.id,note:textRef.current?.value,index:props.index}));}}>Update</Button>
-                <Button onClick={()=>{document.body.style.overflow="auto";dispatch(crudCardActions.setUpdatingByIndex({index:props.index,value:false}))}}>Cancel</Button>
+                <Button  onClick={onUpdate}>Update</Button>
+                <Button onClick={onCancel}>Cancel</Button>
             </span>
             </div> 
     </div>;

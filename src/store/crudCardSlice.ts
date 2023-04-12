@@ -12,7 +12,7 @@ const deleteNote=createAsyncThunk<number,{_id:string,index:number},{rejectValue:
 });
 const updateNote=createAsyncThunk<number,{_id:string,note:string|undefined,index:number},{rejectValue:number}>('user/updateNote',async({_id,note,index},thunkApi)=>{
     try{
-        await axios.post('api/1updateNote',{_id,note});
+        await axios.post('api/updateNote',{_id,note});
         return thunkApi.fulfillWithValue(index);
 
     }
