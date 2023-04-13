@@ -48,6 +48,7 @@ const myNotesSlice = createSlice({
     });
     builder.addCase(fetchMyNotes.rejected, (state, action) => {
       state.error = true;
+      state.loading=false;
       console.log(action.payload);
     });
   },
